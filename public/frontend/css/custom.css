@@ -1,0 +1,244 @@
+.btn-orange {
+    /* Auto layout */
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 6px 16px;
+    gap: 10px;
+    background: #F38120;
+    border-radius: 2px;
+}
+
+.btn-success-custom {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 6px 16px;
+    gap: 10px;
+    height: 33px;
+    left: 1368px;
+    top: 34px;
+    background: #5BA147;
+    border-radius: 2px;
+}
+
+.text-btn {
+    font-style: normal;
+    font-size: 14px;
+    line-height: 21px;
+    /* identical to box height */
+    color: #FFFFFF;
+    /* Inside auto layout */
+}
+
+.footer-background {
+    background: #09223A;
+}
+
+.border-top-feedback {
+    border-top-color: #0B4D8D !important;
+}
+
+.border-top-custom {
+    border-top-color: #F38120 !important;
+}
+
+.avatar-feedback {
+    height: 185px;
+    width: 185px
+}
+
+.img-feedback {
+    width: 100%;
+    height: 100%
+}
+
+.frame-img-feedback {
+    overflow: hidden;
+    width: 187px;
+    height: 187px;
+    object-fit: contain;
+}
+
+.commit-list {
+    height: 250px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.bg-color-muted-blue {
+    background-color: #154985 !important;
+}
+
+.section-partner {
+    background-color: white;
+    height: 56px;
+    width: fit-content;
+    padding: 16px 24px 16px 24px;
+    border-radius: 0px 8px 0px 8px;
+    border-style: solid;
+    border-color: var(--border, #dcdcdc);
+    border-width: 1px;
+}
+
+.section-partner img {
+    max-width: 200px;
+}
+
+.text-dodger-blue {
+    color: #0B4D8D;
+}
+
+.box-img-3x4 {
+    width: 190px;
+    height: 214px;
+}
+
+.img-3x4 {
+    max-width: 135px;
+    max-height: 135px;
+}
+
+.bg-img-idCard {
+    /* width: 276px;*/
+    height: 167px;
+    background-image: url('../img/gallery/rectangle-623.png');
+}
+
+.img-3x4-template {
+    width: 105px;
+    height: 135px;
+    background-image: url('../img/gallery/image3x4-template.png');
+}
+
+.sub-text {
+    font-size: 12px;
+}
+
+p {
+    font-size: 14px;
+    color: #333333;
+}
+
+.menu-text {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+.user-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 160px;
+    white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+    .place-userInfor {
+        position: relative;
+    }
+    .place-photos {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-left: 1em;
+    }
+    #headerSearch {
+        width: 422px;
+    }
+}
+
+.avatar-preview {
+    width: 400px;
+    height: 225px;
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+}
+
+.avatar-preview>div {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.title-exam-registration {
+    color: #333333;
+    font-weight: 600;
+    font-size: 39px;
+    line-height: 58px;
+    margin-bottom: 10px
+}
+
+.text-note {
+    color: #666666;
+}
+
+.text-title-form {
+    color: #0B4D8D;
+}
+
+.divider {
+    margin: 24px 0px;
+}
+
+.modal-title {
+    font-size: 36px;
+    font-weight: 600
+}
+
+.place-photos input[type="file"] {
+    z-index: -1;
+    width: 0px;
+}
+
+.unclick {
+    pointer-events: none;
+}
+
+.unclick button {
+    pointer-events: none;
+    display: none;
+}
+
+.form-label {
+    font-size: 1.1rem;
+}
+
+#upload-demo .cr-image {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+html body,
+div {
+    scrollbar-width: thin !important;
+}
+
+@media (max-width: 992px) {
+    .header-nav-top {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-search {
+        height: 323px !important;
+    }
+    .place-search {
+        width: 120px;
+    }
+    .title-search {
+        font-size: 20px;
+    }
+}
