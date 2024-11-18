@@ -36,7 +36,7 @@
               </div>
               <div class="col-12 mb-3 d-flex">
                 <div class="captcha-img">
-                  <img src="{{ captcha_src() }}" alt="Captcha" style="margin-top: 10px;">
+                  <img src="{{ captcha_src('math') }}" alt="Captcha" style="margin-top: 10px;">
                 </div>
                 <div class="captcha-input">
                   <input type="text" name="captcha" class="form-control" placeholder="Nhập captcha" required>
