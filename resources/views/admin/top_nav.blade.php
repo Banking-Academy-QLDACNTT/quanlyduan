@@ -9,25 +9,23 @@
                     <img src="{{ asset('public/backend/images/img.jpg') }}">
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="{{URL::to('admin/info-admin')}}"> Profile
-{{--                        @if ($user)--}}
-{{--                            @php--}}
-{{--                                $all_inforadmin = DB::table('info_admins')->where('id', $user->admin_id)->get();--}}
-{{--                            @endphp--}}
-{{--                        @else--}}
-{{--                            {{ "" }}--}}
-{{--                        @endif--}}
-{{--                        @if ($user)--}}
-{{--                            @php--}}
-{{--                                session(['admin_id' => $user->id]);--}}
-{{--                            @endphp--}}
-{{--                        @endif--}}
+                    <a class="dropdown-item"  href="{{URL::to('admin/info-admin')}}"> Profile,
+                       @if ($user)
+                           @php
+                           $all_user = DB::table('users')->where('id', $user->user_id)->select('name')->first();
+                           $name = $all_user->name;
+                            @endphp
+                            <p>{{ $name }}</p>
+                      @else
+                           {{ "" }}
+                     @endif
+                       @if ($user)
+                        @php
+                               session(['admin_id' => $user->id]);
+                        @endphp
+                       @endif
                     </a>
-                    <a class="dropdown-item"  href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                    </a>
-                    <a class="dropdown-item"  href="javascript:;">Help</a>
+                    
                     <a class="dropdown-item"  href="{{ route('admin.logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                 </div>
             </li>

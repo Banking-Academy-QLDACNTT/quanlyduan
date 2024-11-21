@@ -25,10 +25,10 @@
       <ul class="nav side-menu">
           <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-table"></i>Thống kê</a>
           </li>
-        <li><a><i class="fa fa-table"></i>Quản lý đăng ký thi <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-table"></i>Quản lý tài khoản <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="">Danh sách đăng ký thi</a></li>
-            <li><a href="">Thêm đăng ký thi</a></li>
+            <li><a href="{{ route('admin.accounts') }}">Danh sách tài khoản</a></li>
+            <li><a href="{{ route('admin.add.account') }}">Thêm tài khoản</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Quản lý lịch thi <span class="fa fa-chevron-down"></span></a>
