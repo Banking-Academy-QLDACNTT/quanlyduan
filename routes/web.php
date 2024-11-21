@@ -1,15 +1,19 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Middleware\Admin;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\Account;
+
+Route::get('/', [AccountController::class, 'admin_login'])->name('admin.login');
+
+//Route::get('/admin', [AccountController::class, 'admin_login'])->name('admin_login');
+// Route::post('/admin/loginpost', [AccountController::class, 'loginPost'])->name('admin.loginPost');
 
 
-Route::get('/admin/login', [AdminController::class, 'admin_login'])->name('admin_login');
-Route::post('/admin/login', [AdminController::class, 'loginPost'])->name('admin.loginPost');
-Route::get('/admin/logout', [AdminController::class, 'admin_logout'])->name('admin.logout');
 
-Route::middleware([Admin::class])->group(function () {
-    Route::get('/', [AdminController::class, 'admin_login'])->name('admin_login');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::middleware([Account::class])->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('view.all.users');
+    Route::get('/admin/dashboard', [AccountController::class, 'dashboard'])->name('admin.dashboard');
 });

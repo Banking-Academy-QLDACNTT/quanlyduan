@@ -28,7 +28,43 @@
                         <span>Settings</span>
                     </a>
                     <a class="dropdown-item"  href="javascript:;">Help</a>
-                    <a class="dropdown-item"  href="{{ route('admin.logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    <form id="logoutForm" method="POST" action="{{ route('api.logout') }}">
+                        @csrf
+                        <input type="hidden" name="token-sanctum" value="{{ session('token') }}">
+                        <input type="hidden" name="username" value="{{ session('account')->username }}">
+                        <button type="submit" class="dropdown-item">
+                            <i class="fa fa-sign-out pull-right"></i> Log Out
+                        </button>
+                    </form>
+                    
+                    {{-- <script>
+                        // Listen for the form submit event
+                        document.getElementById('logoutForm').addEventListener('submit', function(e) {
+                            e.preventDefault(); // Prevent the default form submission
+                    
+                            // Get the token from the hidden input field
+                            const token = document.querySelector('[name="token-sanctum"]').value;
+                    
+                            // Make the AJAX request with Axios, passing the token in the Authorization header
+                            axios.post("{{ route('api.logout') }}", {
+                                _token: document.querySelector('[name="_token"]').value,
+                                token-sanctum: token
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + token // Pass token in the Authorization header
+                                    'Accept': 'application/json',
+                                }
+                            }).then(response => {
+                                // Handle success
+                                console.log(response.data.message);
+                                window.location.href = "{{ route('admin.login') }}"; // Redirect to login page
+                            }).catch(error => {
+                                // Handle error
+                                console.error(error.response.data);
+                            });
+                        });
+                    </script> --}}
+                    
                 </div>
             </li>
 

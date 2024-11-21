@@ -18,7 +18,7 @@
     <div class="container">
       <div class="row mb-5 justify-content-center">
         <div class="col-lg-5 mx-auto order-1" data-aos="fade-up" data-aos-delay="200">
-          <form action="{{ route('admin.loginPost') }}" class="form-box" method="POST" id="admin-login">
+          <form action="{{ route('api.login') }}" class="form-box" method="POST" id="admin-login">
             @csrf
             <div class="row">
               <div class="col-12 mb-3">

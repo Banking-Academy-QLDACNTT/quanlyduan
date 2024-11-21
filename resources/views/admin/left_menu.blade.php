@@ -10,8 +10,10 @@
       <img src="{{ asset('public/backend/images/img.jpg')}}" alt="" class="img-circle profile_img">
     </div>
     <div class="profile_info">
+      @if (session('account'))
       <span>Welcome,</span>
-      <h2>{{ $user->username }}</h2>
+      <h2>{{ session('account')->username}}</h2>
+      @endif
     </div>
   </div>
   <!-- /menu profile quick info -->
@@ -25,10 +27,10 @@
       <ul class="nav side-menu">
           <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-table"></i>Thống kê</a>
           </li>
-        <li><a><i class="fa fa-table"></i>Quản lý đăng ký thi <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-table"></i>Quản lý người dùng <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="">Danh sách đăng ký thi</a></li>
-            <li><a href="">Thêm đăng ký thi</a></li>
+            <li><a href="{{route('view.all.users')}}">Danh sách người dùng</a></li>
+            <li><a href="">Thêm người dùng</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Quản lý lịch thi <span class="fa fa-chevron-down"></span></a>
