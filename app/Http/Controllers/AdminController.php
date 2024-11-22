@@ -46,10 +46,29 @@ class AdminController extends Controller
         return Redirect('/');
     }
 
-    public function all_accounts() {
+    public function all_accounts(Request $request) {
         $adminUser = Auth::guard('admins')->user();
-        $all_accounts = DB::table('accounts')->orderby('updated_at', 'desc')->get();
-        return view('admin.account.all_account', ['user'=>$adminUser], ['all_accounts'=>$all_accounts]);
+        $query = DB::table('accounts');
+
+        // Lọc theo từ khóa (nếu có)
+        if ($request->has('keyword') && !empty($request->keyword)) {
+            $keyword = $request->keyword;
+            $query->where('username', 'like', '%' . $keyword . '%');
+        }
+
+        // Lọc theo Role (nếu có)
+        if ($request->has('role') && !empty($request->role)) {
+            $role = $request->role;
+            $query->where('role', $role);
+        }
+
+        // Phân trang và sắp xếp
+        $all_accounts = $query->orderBy('updated_at', 'desc')->paginate(10);
+
+        return view('admin.account.all_account', [
+            'user' => $adminUser, 
+            'all_accounts' => $all_accounts,
+        ]);
     }
 
     public function add_account()
@@ -189,9 +208,27 @@ class AdminController extends Controller
         }
     }
 
-    public function export() 
+    public function export(Request $request) 
     {
-        return Excel::download(new AdminExport, 'admins.xlsx');
+        $query = DB::table('accounts');
+
+        // Lọc theo từ khóa (nếu có)
+        if ($request->has('keyword') && !empty($request->keyword)) {
+            $keyword = $request->keyword;
+            $query->where('username', 'like', '%' . $keyword . '%');
+        }
+
+        // Lọc theo Role (nếu có)
+        if ($request->has('role') && !empty($request->role)) {
+            $role = $request->role;
+            $query->where('role', $role);
+        }
+
+        $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
+
+        $fileName = 'account_' . Carbon::now('Asia/Ho_Chi_Minh')->format('Ymd_His') . '.xlsx';
+
+        return Excel::download(new AdminExport($filteredAccounts), $fileName);
     }
 
 }

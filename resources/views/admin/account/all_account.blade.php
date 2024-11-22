@@ -13,32 +13,28 @@
 <div class="container">
 <div class="row w3-res-tb">
         <form action="" method="get" class="w-100">
-          <div class="d-flex justify-content-start mb-3">
-            <div class="col-sm-6">
+          <div class="d-flex justify-content-start mb-6">
+            <div class="col-sm-10">
               <div class="input-group">
                 <input type="search" name="keyword" class="form-control" placeholder="Tìm theo Tên" value="{{ request()->keyword }}">
                 <div class="input-group-append">
-                  <button type="submit" id="apply_button" class="btn btn-primary">Lọc</button>
-                  <button type="submit" id="" class="btn btn-primary"><a href="{{ route('admins.export') }}">Xuất Excel</a></button>
-                  
+                  <button type="submit" id="apply_button" class="btn btn-primary col-sm-5">Lọc</button>
+                  <a href="{{ route('admins.export', ['keyword' => request()->keyword, 'role' => request()->role]) }}" class="btn btn-success col-sm-5">Xuất Excel</a>
+                  @php
+                    $roles = DB::table('accounts')->select('role')->distinct()->pluck('role');
+                  @endphp
+                  <select name="role" class="form-control ml-6 col-sm-6">
+                    <option value="">Tất cả vai trò</option>
+                    @foreach($roles as $role)
+                        <option value="{{ $role }}" {{ request()->role == $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
             </div>
           </div>
         </form>
       </div>
-
-      @php
-      $query = DB::table('accounts');
-      if (request()->has('keyword') && !empty(request()->keyword)) {
-          $keyword = request()->keyword;
-          $query->where(function($query) use ($keyword) {
-              $query->where('username', 'like', '%' . $keyword . '%');
-  
-          });
-      }
-      $all_accounts = $query->orderBy('updated_at', 'desc')->paginate(10);
-      @endphp
       </div>
       <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle">
