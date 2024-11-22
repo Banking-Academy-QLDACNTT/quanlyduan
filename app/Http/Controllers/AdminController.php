@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\Admin;
 use App\Models\Admin as ModelsAdmin;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -45,8 +46,8 @@ class AdminController extends Controller
 
     public function all_accounts() {
         $adminUser = Auth::guard('admins')->user();
-        $all_accounts = ModelsAdmin::orderby('updated_at', 'desc')->get();
-        return view('admin.account.all_account', ['user'=>$adminUser], ['all_accounts'=>$all_accounts], compact('all_accounts'));
+        $all_accounts = DB::table('accounts')->orderby('updated_at', 'desc')->get();
+        return view('admin.account.all_account', ['user'=>$adminUser], ['all_accounts'=>$all_accounts]);
     }
 
     public function add_account()
@@ -68,6 +69,8 @@ class AdminController extends Controller
         $user -> name = $request -> name;
         $user -> email = $request -> email;
         $user -> password = Hash::make($request->password);
+        $user -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $user -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $user -> save();
 
         $accountId = $user -> id;
@@ -77,6 +80,8 @@ class AdminController extends Controller
         $account -> password = Hash::make($request->password);
         $account -> user_id = $accountId;
         $account -> role = $request -> role;
+        $user -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $user -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $account -> save();
         return redirect::to('admin/accounts');
 
@@ -140,6 +145,41 @@ class AdminController extends Controller
         $user->update($data);
 
         return view('admin.account.info_user', ['user'=>$adminUser]);
+    }
+
+    public function password_account($id)
+    {
+        $admin = ModelsAdmin::findOrFail($id);
+        return view('admin.account.change_password', ['user' => $admin], compact('admin'));
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $admin = ModelsAdmin::findOrFail($id);
+        $request->validate([
+            'current_password' => ['required',
+            function($attr, $value, $fail) use($admin) {
+                if (!Hash::check($value, $admin->password)) {
+                    $fail('Mật khẩu hiện tại không đúng.');
+                }
+            }],
+            'new_password' => 'required|min:6|different:current_password',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($request->new_password === $request->current_password) {
+            return redirect()->back()->withErrors(['new_password' => 'Mật khẩu mới không thể trùng với mật khẩu cũ.']);
+        }
+
+        // Cập nhật mật khẩu mới
+        $data['password'] = bcrypt($request->new_password);
+        if($admin->update($data))
+        {
+            return redirect()->route('admin.accounts')->with('success', 'Updated your password');
+        }
+        else {
+            return redirect()->back()->with('no', 'Something error.');
+        }
     }
 
 }

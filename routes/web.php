@@ -19,6 +19,10 @@ Route::middleware([Admin::class])->group(function () {
     Route::post('admin/account/{id}/update', [AdminController::class, 'update_account'])->name('admin.update.account');
     Route::get('/admin/info-admin', [AdminController::class, 'info_admin'])->name('admin.info.admin');
     Route::post('/admin/save-info-admin', [AdminController::class, 'save_info_admin'])->name('admin.save.info');
+    Route::get('admin/account/{id}/password', [AdminController::class, 'password_account'])->name('admin.password.account');
+    Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
+
+
 
 
 

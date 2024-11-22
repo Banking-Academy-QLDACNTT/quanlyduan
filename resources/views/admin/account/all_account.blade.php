@@ -35,8 +35,7 @@
   
           });
       }
-
-      $all_accounts = $query->paginate(10);
+      $all_accounts = $query->orderBy('updated_at', 'desc')->paginate(10);
       @endphp
       </div>
       <div class="table-responsive">
@@ -58,6 +57,8 @@
                 <td>
                 <a href="{{ route('admin.edit.account', ['id' => $account->id]) }}" class="active styling-edit" ui-toggle-class="" title="Sửa">
                   <i class="fa fa-pencil-square-o text-success text-active"></i></a>
+                <a title="Đổi mật khẩu" href="{{ route('admin.password.account', ['id' => $account->id]) }}" class="active styling-edit" ui-toggle-class="">
+                    <i class="fa fa-plus"></i></a>
                 <a title="Xóa" onclick="return confirm('Bạn có muốn xóa không?')" href="{{ route('admin.delete.account', ['id' => $account->id]) }}" class="active styling-edit" ui-toggle-class="">
                   <i class="fa fa-times text-danger text"></i></a>
               </td>
