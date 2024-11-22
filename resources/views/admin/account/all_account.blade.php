@@ -16,19 +16,35 @@
           <div class="d-flex justify-content-start mb-6">
             <div class="col-sm-10">
               <div class="input-group">
-                <input type="search" name="keyword" class="form-control" placeholder="Tìm theo Tên" value="{{ request()->keyword }}">
+                <input type="search" name="keyword" class="form-control" placeholder="Tìm theo Tên" value="{{ request()->keyword ?? '' }}">
                 <div class="input-group-append">
-                  <button type="submit" id="apply_button" class="btn btn-primary col-sm-5">Lọc</button>
-                  <a href="{{ route('admins.export', ['keyword' => request()->keyword, 'role' => request()->role]) }}" class="btn btn-success col-sm-5">Xuất Excel</a>
+                  
                   @php
                     $roles = DB::table('accounts')->select('role')->distinct()->pluck('role');
+                    $statuss = DB::table('accounts')->select('status')->distinct()->pluck('status');
                   @endphp
-                  <select name="role" class="form-control ml-6 col-sm-6">
+                  <select name="role" class="form-control ml-6 col-sm-5">
                     <option value="">Tất cả vai trò</option>
                     @foreach($roles as $role)
                         <option value="{{ $role }}" {{ request()->role == $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
                     @endforeach
                   </select>
+                  {{-- Select status --}}
+                  {{-- <select name="status" class="form-control ml-6 col-sm-5">
+                      <option value="">Tất cả trạng thái</option>
+                      @foreach($statuss as $status)
+                          <option value="{{ $status }}" {{ request()->status == $status ? 'selected' : '' }}>
+                            {{ $status == 1 ? 'Activate' : 'Deactivate' }}
+                          </option>
+                      @endforeach
+                  </select> --}}
+                  <select name="status" class="form-control ml-6 col-sm-5">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="1" {{ request()->status == '1' ? 'selected' : '' }}>Activate</option>
+                    <option value="0" {{ request()->status == '0' ? 'selected' : '' }}>Deactivate</option>
+                </select>
+                <button type="submit" id="apply_button" class="btn btn-primary col-sm-2">Lọc</button>
+                  <a href="{{ route('admins.export', ['keyword' => request()->keyword, 'role' => request()->role, 'status' => request()->status]) }}" class="btn btn-success col-sm-3">Xuất Excel</a>
                 </div>
               </div>
             </div>

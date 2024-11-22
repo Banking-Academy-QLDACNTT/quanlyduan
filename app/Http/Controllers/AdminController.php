@@ -48,21 +48,37 @@ class AdminController extends Controller
 
     public function all_accounts(Request $request) {
         $adminUser = Auth::guard('admins')->user();
-        $query = DB::table('accounts');
+        $filters = [];
 
         // Lọc theo từ khóa (nếu có)
-        if ($request->has('keyword') && !empty($request->keyword)) {
-            $keyword = $request->keyword;
-            $query->where('username', 'like', '%' . $keyword . '%');
+        if ($request->has('keyword') && $request->keyword != '') {
+            $filters['username'] = '%' . $request->keyword . '%';
         }
 
         // Lọc theo Role (nếu có)
-        if ($request->has('role') && !empty($request->role)) {
-            $role = $request->role;
-            $query->where('role', $role);
+        if ($request->has('role') && $request->role != '') {
+            $filters['role'] = $request->role;
         }
 
-        // Phân trang và sắp xếp
+        // Lọc theo Status (nếu có)
+        if ($request->has('status') && $request->status != '') {
+            $filters['status'] = $request->status;
+        }
+
+        // Tạo query từ bảng accounts
+        $query = DB::table('accounts');
+
+        // Lọc theo các điều kiện trong filters
+        foreach ($filters as $column => $value) {
+            // Nếu giá trị là kiểu 'like', dùng where('column', 'like', value)
+            if (strpos($value, '%') !== false) {
+                $query->where($column, 'like', $value);
+            } else {
+                $query->where($column, $value);
+            }
+        }
+
+        // Lọc và phân trang kết quả
         $all_accounts = $query->orderBy('updated_at', 'desc')->paginate(10);
 
         return view('admin.account.all_account', [
@@ -211,23 +227,34 @@ class AdminController extends Controller
     public function export(Request $request) 
     {
         $query = DB::table('accounts');
-
-        // Lọc theo từ khóa (nếu có)
         if ($request->has('keyword') && !empty($request->keyword)) {
             $keyword = $request->keyword;
             $query->where('username', 'like', '%' . $keyword . '%');
         }
 
-        // Lọc theo Role (nếu có)
         if ($request->has('role') && !empty($request->role)) {
             $role = $request->role;
             $query->where('role', $role);
         }
 
-        $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
+        if ($request->has('status') && $request->status !== '') {
+            $status = $request->status;
+            $query->where('status', $status);
+        }
 
+        // Nếu không có tham số nào thì không lọc
+        if (!$request->has('keyword') && !$request->has('role') && !$request->has('status')) {
+            // Không thêm điều kiện nào, lấy tất cả bản ghi
+            $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
+        } else {
+            // Nếu có bất kỳ tham số nào thì áp dụng điều kiện lọc
+            $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
+        }
+
+        // Tạo tên file cho Excel
         $fileName = 'account_' . Carbon::now('Asia/Ho_Chi_Minh')->format('Ymd_His') . '.xlsx';
 
+        // Trả về file Excel đã lọc
         return Excel::download(new AdminExport($filteredAccounts), $fileName);
     }
 
