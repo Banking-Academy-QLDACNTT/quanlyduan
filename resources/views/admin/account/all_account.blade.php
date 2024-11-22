@@ -19,6 +19,8 @@
                 <input type="search" name="keyword" class="form-control" placeholder="Tìm theo Tên" value="{{ request()->keyword }}">
                 <div class="input-group-append">
                   <button type="submit" id="apply_button" class="btn btn-primary">Lọc</button>
+                  <button type="submit" id="" class="btn btn-primary"><a href="{{ route('admins.export') }}">Xuất Excel</a></button>
+                  
                 </div>
               </div>
             </div>

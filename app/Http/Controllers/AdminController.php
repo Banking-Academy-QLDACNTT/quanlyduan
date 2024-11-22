@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AdminExport;
 use App\Http\Middleware\Admin;
 use App\Models\Admin as ModelsAdmin;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -111,6 +113,8 @@ class AdminController extends Controller
         $data = array();
         $data['username'] = $request->username;
         $data['password'] = $request->matkhau;
+        $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+        $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
 
         $existingUser = DB::table('accounts')->where('username', $request->username)->exists();
         $request->validate([
@@ -140,6 +144,8 @@ class AdminController extends Controller
         $data = array();
         $data['name'] = $request->name;
         $data['email'] = $request->email;
+        $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+        $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         
         $user = User::find($adminUser->user_id);
         $user->update($data);
@@ -173,6 +179,7 @@ class AdminController extends Controller
 
         // Cập nhật mật khẩu mới
         $data['password'] = bcrypt($request->new_password);
+        $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         if($admin->update($data))
         {
             return redirect()->route('admin.accounts')->with('success', 'Updated your password');
@@ -180,6 +187,11 @@ class AdminController extends Controller
         else {
             return redirect()->back()->with('no', 'Something error.');
         }
+    }
+
+    public function export() 
+    {
+        return Excel::download(new AdminExport, 'admins.xlsx');
     }
 
 }
