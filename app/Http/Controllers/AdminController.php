@@ -148,23 +148,14 @@ class AdminController extends Controller
         $data = array();
         $data['username'] = $request->username;
         $data['password'] = $request->matkhau;
+        $data['status'] = $request->status;
         $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-
-        $existingUser = DB::table('accounts')->where('username', $request->username)->exists();
-        $request->validate([
-            'username' => 'required',
-        ]);
         
-        if ($existingUser) {
-            return back()->withInput()->withErrors(['username' => 'Username này đã tồn tại']);
-        }
-        else {
-            DB::table('accounts')->where('id', $account_id) ->update($data);
-            
-            Session()->put('message', 'Sửa thành công');
-            return Redirect::to('admin/accounts');
-        }
+        DB::table('accounts')->where('id', $account_id)->update($data);
+        
+        Session()->put('message', 'Sửa thành công');
+        return Redirect::to('admin/accounts');
     }
 
     public function info_admin()

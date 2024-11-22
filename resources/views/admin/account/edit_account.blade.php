@@ -30,6 +30,13 @@
                                 <input type="password" value="{{$account ->password}}" class="form-control text-3 h-auto py-2" placeholder="Nhập mật khẩu" name="matkhau" readonly>
                             </div>
                             <div class="form-group col-lg-12">
+                                <label class="form-label mb-1 text-2 required">Status</label>
+                                <select name="status" class="form-control text-3 h-auto py-2">
+                                    <option value="1" {{ $account->status == '1' ? 'selected' : '' }}>Activate</option>
+                                    <option value="0" {{ $account->status == '0' ? 'selected' : '' }}>Deactivate</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-12">
                                     <label class="form-label mb-1 text-2 required">Username</label>
                                     <input type="text" value="{{$account ->username}}" class="form-control text-3 h-auto py-2" name="username">
                             </div>
