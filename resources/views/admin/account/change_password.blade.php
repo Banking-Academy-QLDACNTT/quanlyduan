@@ -37,21 +37,23 @@
 
                             <h4 class="text-uppercase text-title-form">ĐỔI MẬT KHẨU TÀI KHOẢN</h4>
                             <div class="form-group col-lg-12">
+                                <div class="row">
                                 <label class="form-label mb-1 text-2 required">Nhập mật khẩu cũ</label>
                                 <input type="password" value="" class="form-control text-3 h-auto py-2" placeholder="Nhập mật khẩu cũ" name="current_password" >
                                 @error('current_password')
                                 <small class = "help-block">{{ $message }}</small>
                                 @enderror
+                                </div>
                             </div>
-                            <div class ="row">
-                            <div class="form-group col-lg-6">
+                            <div class ="form-group col-lg-12">
+                            <div class="row">
                                 <label class="form-label mb-1 text-2 required">Nhập mật khẩu mới</label>
                                 <input type="password" value="" class="form-control text-3 h-auto py-2" placeholder="Nhập mật khẩu mới" name="new_password" >
                                 @error('new_password')
                                 <small class = "help-block">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="form-group col-lg-6">
+                            <div class="row">
                                 <label class="form-label mb-1 text-2 required">Nhập lại mật khẩu mới</label>
                                 <input type="password" value="" class="form-control text-3 h-auto py-2" placeholder="Nhập mật khẩu mới" name="confirm_password">
                                 @error('confirm_password')
