@@ -22,11 +22,4 @@ Route::middleware([Admin::class])->group(function () {
     Route::get('admin/account/{id}/password', [AdminController::class, 'password_account'])->name('admin.password.account');
     Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
     Route::get('/admins-export', [AdminController::class, 'export'])->name('admins.export');
-
-
-
-
-
-
-
 });

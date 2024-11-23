@@ -12,7 +12,7 @@
                     <a class="dropdown-item"  href="{{URL::to('admin/info-admin')}}"> Profile,
                        @if ($user)
                            @php
-                           $all_user = DB::table('users')->where('id', $user->user_id)->select('name')->first();
+                           $all_user = DB::table('employees')->where('id', $user->id)->select('name')->first();
                            $name = $all_user->name;
                             @endphp
                             <p>{{ $name }}</p>

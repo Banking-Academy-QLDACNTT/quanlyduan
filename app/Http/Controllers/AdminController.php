@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AdminExport;
-use App\Http\Middleware\Admin;
-use App\Models\Admin as ModelsAdmin;
+use App\Models\Admin;
+use App\Models\Employee;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -50,23 +50,24 @@ class AdminController extends Controller
         $adminUser = Auth::guard('admins')->user();
         $filters = [];
 
-        // Lọc theo từ khóa (nếu có)
+        // Lọc theo Name
         if ($request->has('keyword') && $request->keyword != '') {
-            $filters['username'] = '%' . $request->keyword . '%';
+            $filters['name'] = '%' . $request->keyword . '%';
         }
 
-        // Lọc theo Role (nếu có)
-        if ($request->has('role') && $request->role != '') {
-            $filters['role'] = $request->role;
+        // Lọc theo Department
+        if ($request->has('department') && $request->department != '') {
+            $filters['employees.departmentId'] = $request->department;
         }
 
-        // Lọc theo Status (nếu có)
-        if ($request->has('status') && $request->status != '') {
-            $filters['status'] = $request->status;
-        }
-
-        // Tạo query từ bảng accounts
-        $query = DB::table('accounts');
+        $query = DB::table('accounts')->join('employees', 'employees.id', '=', 'accounts.id')
+        ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        ->select(
+        'accounts.*',
+        'employees.*',
+        'departments.*',
+        'employees.departmentId as department_id',
+        'employees.id as account_id');
 
         // Lọc theo các điều kiện trong filters
         foreach ($filters as $column => $value) {
@@ -79,11 +80,13 @@ class AdminController extends Controller
         }
 
         // Lọc và phân trang kết quả
-        $all_accounts = $query->orderBy('updated_at', 'desc')->paginate(10);
+        $all_accounts = $query->orderBy('updatedAt', 'desc')->paginate(5);
+        $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
 
         return view('admin.account.all_account', [
             'user' => $adminUser, 
             'all_accounts' => $all_accounts,
+            'departments' => $departments
         ]);
     }
 
@@ -95,64 +98,87 @@ class AdminController extends Controller
 
     public function save_account(Request $request)
     {
+        $adminUser = Auth::guard('admins')->user();
+        $updateBy = DB::table('employees')->where('id', $adminUser->id)->pluck('employeeId')->first();
         $validatedData = $request->validate([
             'username' => 'required|unique:accounts|max:255',
             'password' => 'required|max:255',
-            'role' => 'required',
+            'dob' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:users',]);
+            'department' => 'required|',
+            'sex' => 'required',
+            'phoneNumber' => 'required|max:10|string',]);
         
-        $user = new User();
+        $account = new Admin();
+        $account -> username = $request -> username;
+        $account -> password = Hash::make($request->password);
+        $account -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $account -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $account -> updatedAt = Carbon::now('Asia/Ho_Chi_Minh');
+        $account -> updateBy = $updateBy;    
+        $account -> save();
+
+        $accountId = $account -> id;
+
+        $user = new Employee();
         $user -> name = $request -> name;
-        $user -> email = $request -> email;
-        $user -> password = Hash::make($request->password);
+        $user -> phoneNumber = $request -> phoneNumber;
+        $user -> departmentId = $request -> department;
+        $user -> dateOfBirth = $request -> dob;
+        $user -> sex = $request -> sex;
+        $user -> id = $accountId;
         $user -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $user -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $user -> save();
 
-        $accountId = $user -> id;
-        
-        $account = new ModelsAdmin();
-        $account -> username = $request -> username;
-        $account -> password = Hash::make($request->password);
-        $account -> user_id = $accountId;
-        $account -> role = $request -> role;
-        $user -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
-        $user -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
-        $account -> save();
         return redirect::to('admin/accounts');
-
-
     }
 
     public function delete_account($account_id)
     {
         $adminUser = Auth::guard('admins')->user();
-        $account = DB::table('accounts')->where('id', $account_id)->first();
-        DB::table('accounts')->where('id', $account_id) ->delete();
+        DB::table('employees')->where('id', $account_id)->delete();
+        DB::table('accounts')->where('id', $account_id)->delete();
         Session()->put('message', 'Xóa tài khoản thành công');
         return Redirect::to('admin/accounts');
     }
 
-    public function edit_account($account_id)
+    public function edit_account($id)
     {
         $adminUser = Auth::guard('admins')->user();
-        $account = DB::table('accounts')->where('id', $account_id)->first();
+        $account = DB::table('accounts')->where('id', $id)->pluck('id')->first();
         $all_account = DB::table('accounts')->get();
-        return view('admin.account.edit_account', ['user' => $adminUser], compact('account','all_account'));
+        $info = DB::table('accounts')->join('employees', 'employees.id', '=', 'accounts.id')
+        ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        ->select(
+        'accounts.*',
+        'employees.*',
+        'departments.*',
+        'employees.id as account_id')->where('accounts.id', $account)->first();
+        $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
+        return view('admin.account.edit_account', ['user' => $adminUser, 'infos'=>$info, 'departments'=>$departments], compact('account','all_account'));
     }
 
-    public function update_account(Request $request, $account_id)
+    public function update_account(Request $request, $id)
     {
         $adminUser = Auth::guard('admins')->user();
+        $user_id = DB::table('employees')->where('id', $id)->pluck('id')->first();
         $data = array();
-        $data['username'] = $request->username;
-        $data['password'] = $request->matkhau;
-        $data['status'] = $request->status;
+        $data['name'] = $request->name;
+        $data['phoneNumber'] = $request->phoneNumber;
+        $data['departmentId'] = $request->department;
+        $data['dateOfBirth'] = $request->dob;
+        $data['sex'] = $request->input('sex');
         $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+
+        $data_account = array();
+        $data_account['username'] = $request->username;
+
+        $account = Admin::find($id);
+        $account->update($data_account);
         
-        DB::table('accounts')->where('id', $account_id)->update($data);
+        $user = Employee::find($user_id);
+        $user->update($data);
         
         Session()->put('message', 'Sửa thành công');
         return Redirect::to('admin/accounts');
@@ -161,33 +187,54 @@ class AdminController extends Controller
     public function info_admin()
     {
         $adminUser = Auth::guard('admins')->user();
-        return view('admin.account.info_user', ['user'=>$adminUser]);
+        $info = DB::table('accounts')->join('employees', 'employees.id', '=', 'accounts.id')
+        ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        ->select(
+        'accounts.*',
+        'employees.*',
+        'departments.*',
+        'employees.id as account_id')->where('accounts.id', $adminUser->id)->first();
+        $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
+
+        return view('admin.account.info_user', ['user'=>$adminUser, 'infos'=>$info, 'departments'=>$departments]);
     }
 
     public function save_info_admin(Request $request)
     {
         $adminUser = Auth::guard('admins')->user();
+        
         $data = array();
         $data['name'] = $request->name;
-        $data['email'] = $request->email;
+        $data['phoneNumber'] = $request->phoneNumber;
+        $data['departmentId'] = $request->department;
+        $data['dateOfBirth'] = $request->dob;
+        $data['sex'] = $request->input('sex');
         $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        $data['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         
-        $user = User::find($adminUser->user_id);
+        $user = Employee::find($adminUser->id);
         $user->update($data);
 
-        return view('admin.account.info_user', ['user'=>$adminUser]);
+        $info = DB::table('accounts')->join('employees', 'employees.id', '=', 'accounts.id')
+        ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        ->select(
+        'accounts.*',
+        'employees.*',
+        'departments.*',
+        'employees.id as account_id')->where('accounts.id', $adminUser->id)->first();
+        $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
+
+        return view('admin.account.info_user', ['user'=>$adminUser, 'infos'=>$info, 'departments'=>$departments]);
     }
 
     public function password_account($id)
     {
-        $admin = ModelsAdmin::findOrFail($id);
+        $admin = Admin::findOrFail($id);
         return view('admin.account.change_password', ['user' => $admin], compact('admin'));
     }
 
     public function changePassword(Request $request, $id)
     {
-        $admin = ModelsAdmin::findOrFail($id);
+        $admin = Admin::findOrFail($id);
         $request->validate([
             'current_password' => ['required',
             function($attr, $value, $fail) use($admin) {
@@ -217,33 +264,69 @@ class AdminController extends Controller
 
     public function export(Request $request) 
     {
-        $query = DB::table('accounts');
-        if ($request->has('keyword') && !empty($request->keyword)) {
-            $keyword = $request->keyword;
-            $query->where('username', 'like', '%' . $keyword . '%');
+        // $query = DB::table('accounts')
+        // ->join('employees', 'employees.id', '=', 'accounts.id')
+        // ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        // ->select(
+        //     'accounts.username',
+        //     'employees.name',
+        //     'employees.dateOfBirth',
+        //     'employees.phoneNumber',
+        //     'departments.departmentName'
+        // );
+        // if ($request->has('keyword') && !empty($request->keyword)) {
+        //     $keyword = $request->keyword;
+        //     $query->where('employees.name', 'like', '%' . $keyword . '%');
+        // }
+
+        // if ($request->has('department') && $request->department != '') {
+        //     $department = $request->department;
+        //     $query->where('employees.departmentId', $department);
+        // }
+
+        // // Nếu không có tham số nào thì không lọc
+        // if (!$request->has('keyword') && !$request->has('department')) {
+        //     // Không thêm điều kiện nào, lấy tất cả bản ghi
+        //     $filteredAccounts = $query->orderBy('accounts.updatedAt', 'desc')->get();
+        // } else {
+        //     // Nếu có bất kỳ tham số nào thì áp dụng điều kiện lọc
+        //     $filteredAccounts = $query->orderBy('accounts.updatedAt', 'desc')->get();
+        // }
+
+        $filters = [];
+
+        // Lọc theo Name
+        if ($request->has('keyword') && $request->keyword != '') {
+            $filters['name'] = '%' . $request->keyword . '%';
         }
 
-        if ($request->has('role') && !empty($request->role)) {
-            $role = $request->role;
-            $query->where('role', $role);
+        // Lọc theo Department
+        if ($request->has('department') && $request->department != '') {
+            $filters['employees.departmentId'] = $request->department;
         }
 
-        if ($request->has('status') && $request->status !== '') {
-            $status = $request->status;
-            $query->where('status', $status);
+        $query = DB::table('accounts')->join('employees', 'employees.id', '=', 'accounts.id')
+        ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
+        ->select(
+        'accounts.*',
+        'employees.*',
+        'departments.*',
+        'employees.id as account_id');
+
+        // Lọc theo các điều kiện trong filters
+        foreach ($filters as $column => $value) {
+            // Nếu giá trị là kiểu 'like', dùng where('column', 'like', value)
+            if (strpos($value, '%') !== false) {
+                $query->where($column, 'like', $value);
+            } else {
+                $query->where($column, $value);
+            }
         }
 
-        // Nếu không có tham số nào thì không lọc
-        if (!$request->has('keyword') && !$request->has('role') && !$request->has('status')) {
-            // Không thêm điều kiện nào, lấy tất cả bản ghi
-            $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
-        } else {
-            // Nếu có bất kỳ tham số nào thì áp dụng điều kiện lọc
-            $filteredAccounts = $query->orderBy('updated_at', 'desc')->get();
-        }
+        $filteredAccounts = $query->orderBy('updatedAt', 'desc')->get();
 
         // Tạo tên file cho Excel
-        $fileName = 'account_' . Carbon::now('Asia/Ho_Chi_Minh')->format('Ymd_His') . '.xlsx';
+        $fileName = 'account_list_' . Carbon::now('Asia/Ho_Chi_Minh')->format('Ymd_His') . '.xlsx';
 
         // Trả về file Excel đã lọc
         return Excel::download(new AdminExport($filteredAccounts), $fileName);

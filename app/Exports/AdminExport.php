@@ -26,17 +26,18 @@ class AdminExport implements FromCollection, WithHeadings, WithStyles, WithMappi
     // Trả về dữ liệu để xuất Excel
     public function headings(): array
     {
-        return ['ID', 'Username', 'Status', 'Role'];
+        return ['Tài khoản', 'Họ tên', 'Ngày sinh', 'SĐT', 'Phòng ban'];
     }
 
     // Định nghĩa dữ liệu sẽ được xuất (chỉ các trường cần thiết)
     public function map($account): array
     {
         return [
-            $account->id,
             $account->username,
-            $account->status == 1 ? 'Activate' : 'Deactivate', // Trạng thái
-            $account->role,
+            $account->name,
+            $account->dateOfBirth,
+            $account->phoneNumber,
+            $account->departmentName,
         ];
     }
 
