@@ -1,0 +1,26 @@
+.toast-container {
+    position: fixed;
+    top: 99px;
+    right: 0;
+    z-index: 9999;
+}
+
+.toast {
+    margin: 6px;
+    font-size: 10pt;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgba(180, 180, 180, 0.7);
+    border: none !important;
+}
+
+.toast.success {
+    display: block;
+}
+
+.toast.warning {
+    display: block;
+}
+
+.toast.error {
+    display: block;
+}
