@@ -9,92 +9,25 @@
                     <img src="{{ asset('public/backend/images/img.jpg') }}">
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="{{URL::to('admin/info-admin')}}"> Profile
-{{--                        @if ($user)--}}
-{{--                            @php--}}
-{{--                                $all_inforadmin = DB::table('info_admins')->where('id', $user->admin_id)->get();--}}
-{{--                            @endphp--}}
-{{--                        @else--}}
-{{--                            {{ "" }}--}}
-{{--                        @endif--}}
-{{--                        @if ($user)--}}
-{{--                            @php--}}
-{{--                                session(['admin_id' => $user->id]);--}}
-{{--                            @endphp--}}
-{{--                        @endif--}}
+                    <a class="dropdown-item"  href="{{URL::to('admin/info-admin')}}"> Profile,
+                       @if ($user)
+                           @php
+                           $all_user = DB::table('employees')->where('id', $user->id)->select('name')->first();
+                           $name = $all_user->name;
+                            @endphp
+                            <p>{{ $name }}</p>
+                      @else
+                           {{ "" }}
+                     @endif
+                       @if ($user)
+                        @php
+                               session(['admin_id' => $user->id]);
+                        @endphp
+                       @endif
                     </a>
-                    <a class="dropdown-item"  href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                    </a>
-                    <a class="dropdown-item"  href="javascript:;">Help</a>
-                    <a class="dropdown-item"  href=""><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    
+                    <a class="dropdown-item"  href="{{ route('admin.logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                 </div>
-            </li>
-
-            <li role="presentation" class="nav-item dropdown open">
-                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
-                </a>
-                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                    <li class="nav-item">
-                        <a class="dropdown-item">
-                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                            <span>
-                <span>John Smith</span>
-                <span class="time">3 mins ago</span>
-              </span>
-                            <span class="message">
-                Film festivals used to be do-or-die moments for movie makers. They were where...
-              </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="dropdown-item">
-                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                            <span>
-                <span>John Smith</span>
-                <span class="time">3 mins ago</span>
-              </span>
-                            <span class="message">
-                Film festivals used to be do-or-die moments for movie makers. They were where...
-              </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="dropdown-item">
-                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                            <span>
-                <span>John Smith</span>
-                <span class="time">3 mins ago</span>
-              </span>
-                            <span class="message">
-                Film festivals used to be do-or-die moments for movie makers. They were where...
-              </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="dropdown-item">
-                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                            <span>
-                <span>John Smith</span>
-                <span class="time">3 mins ago</span>
-              </span>
-                            <span class="message">
-                Film festivals used to be do-or-die moments for movie makers. They were where...
-              </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <div class="text-center">
-                            <a class="dropdown-item">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
             </li>
         </ul>
     </nav>
