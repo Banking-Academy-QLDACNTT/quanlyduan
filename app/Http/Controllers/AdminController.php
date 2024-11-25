@@ -67,7 +67,8 @@ class AdminController extends Controller
         'employees.*',
         'departments.*',
         'employees.departmentId as department_id',
-        'employees.id as account_id');
+        'employees.id as account_id',
+        DB::raw('GREATEST(accounts.updatedAt, employees.updated_at) as lastUpdated'));
 
         // Lọc theo các điều kiện trong filters
         foreach ($filters as $column => $value) {
@@ -79,12 +80,22 @@ class AdminController extends Controller
             }
         }
 
+        // Thêm chức năng sắp xếp
+        $sortColumn = $request->input('sort', 'lastUpdated');  // Mặc định sắp xếp theo 'lastUpdated'
+        $sortOrder = $request->input('order', 'desc');  // Mặc định sắp xếp giảm dần (desc)
+
+        // Xác thực cột sắp xếp hợp lệ
+        $validSortColumns = ['username', 'name', 'dateOfBirth', 'phoneNumber', 'departmentName', 'lastUpdated'];
+        if (in_array($sortColumn, $validSortColumns)) {
+            $query->orderBy($sortColumn, $sortOrder);
+        }
+
         // Lọc và phân trang kết quả
-        $all_accounts = $query->orderBy('updatedAt', 'desc')->paginate(5);
+        $all_accounts = $query->paginate(5);
         $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
 
         return view('admin.account.all_account', [
-            'user' => $adminUser, 
+            'user' => $adminUser,
             'all_accounts' => $all_accounts,
             'departments' => $departments
         ]);
@@ -173,6 +184,9 @@ class AdminController extends Controller
 
         $data_account = array();
         $data_account['username'] = $request->username;
+        $data_account['updatedAt'] = Carbon::now('Asia/Ho_Chi_Minh');
+        $data_account['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+
 
         $account = Admin::find($id);
         $account->update($data_account);
