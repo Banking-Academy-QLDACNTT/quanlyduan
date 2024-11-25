@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 
 
@@ -24,4 +25,5 @@ Route::middleware([Admin::class])->group(function () {
     Route::get('admin/account/{id}/password', [AdminController::class, 'password_account'])->name('admin.password.account');
     Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
     Route::get('/admins-export', [AdminController::class, 'export'])->name('admins.export');
+    Route::get('/order-export', [UserController::class, 'order'])->name('order.export');
 });
