@@ -80,16 +80,6 @@ class AdminController extends Controller
             }
         }
 
-        // Lọc và phân trang kết quả
-        // $all_accounts = $query->orderBy('lastUpdated', 'desc')->paginate(5);
-        // $departments = DB::table('departments')->select('departmentId', 'departmentName')->get();
-
-        // return view('admin.account.all_account', [
-        //     'user' => $adminUser, 
-        //     'all_accounts' => $all_accounts,
-        //     'departments' => $departments
-        // ]);
-
         // Thêm chức năng sắp xếp
         $sortColumn = $request->input('sort', 'lastUpdated');  // Mặc định sắp xếp theo 'lastUpdated'
         $sortOrder = $request->input('order', 'desc');  // Mặc định sắp xếp giảm dần (desc)
