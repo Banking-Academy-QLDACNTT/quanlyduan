@@ -36,7 +36,7 @@
       </div>
       </div>
       <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle">
+        {{-- <table class="table table-hover table-bordered align-middle">
           <thead>
             <tr class="text-center table-primary">
             <th>Tài khoản</th>
@@ -66,7 +66,70 @@
             </tr>
             @endforeach
           </tbody>
+        </table> --}}
+        <table class="table table-hover table-bordered align-middle">
+          <thead>
+            <tr class="text-center table-primary">
+              <th>
+                Tài khoản
+                <a href="{{ route('admin.accounts', ['sort' => 'username', 'order' => 'asc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'username' && request('order') == 'asc' ? 'text-success' : '' }}">&#9650;</a>
+                <a href="{{ route('admin.accounts', ['sort' => 'username', 'order' => 'desc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'username' && request('order') == 'desc' ? 'text-success' : '' }}">&#9660;</a>
+              </th>
+              <th>
+                Họ tên
+                <a href="{{ route('admin.accounts', ['sort' => 'name', 'order' => 'asc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'name' && request('order') == 'asc' ? 'text-success' : '' }}">&#9650;</a>
+                <a href="{{ route('admin.accounts', ['sort' => 'name', 'order' => 'desc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'name' && request('order') == 'desc' ? 'text-success' : '' }}">&#9660;</a>
+              </th>
+              <th>
+                Ngày sinh
+                <a href="{{ route('admin.accounts', ['sort' => 'dateOfBirth', 'order' => 'asc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'dateOfBirth' && request('order') == 'asc' ? 'text-success' : '' }}">&#9650;</a>
+                <a href="{{ route('admin.accounts', ['sort' => 'dateOfBirth', 'order' => 'desc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'dateOfBirth' && request('order') == 'desc' ? 'text-success' : '' }}">&#9660;</a>
+              </th>
+              <th>
+                SĐT
+                <a href="{{ route('admin.accounts', ['sort' => 'phoneNumber', 'order' => 'asc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'phoneNumber' && request('order') == 'asc' ? 'text-success' : '' }}">&#9650;</a>
+                <a href="{{ route('admin.accounts', ['sort' => 'phoneNumber', 'order' => 'desc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'phoneNumber' && request('order') == 'desc' ? 'text-success' : '' }}">&#9660;</a>
+              </th>
+              <th>
+                Phòng ban
+                <a href="{{ route('admin.accounts', ['sort' => 'departmentName', 'order' => 'asc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'departmentName' && request('order') == 'asc' ? 'text-success' : '' }}">&#9650;</a>
+                <a href="{{ route('admin.accounts', ['sort' => 'departmentName', 'order' => 'desc', 'keyword' => request()->keyword, 'department' => request()->department]) }}" 
+                   class="text-decoration-none {{ request('sort') == 'departmentName' && request('order') == 'desc' ? 'text-success' : '' }}">&#9660;</a>
+              </th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($all_accounts as $account)
+            <tr>
+              <td>{{$account->username}}</td>
+              <td>{{$account->name}}</td>
+              <td>{{$account->dateOfBirth}}</td>
+              <td>{{$account->phoneNumber}}</td>
+              <td>{{$account->departmentName}}</td>
+              <td>
+                <a href="{{ route('admin.edit.account', ['id' => $account->id]) }}" class="active styling-edit" title="Sửa">
+                  <i class="fa fa-pencil-square-o text-success"></i></a>
+                <a title="Đổi mật khẩu" href="{{ route('admin.password.account', ['id' => $account->id]) }}" class="active styling-edit">
+                  <i class="fa fa-plus"></i></a>
+                <a title="Xóa" onclick="return confirm('Bạn có muốn xóa không?')" href="{{ route('admin.delete.account', ['id' => $account->id]) }}" class="active styling-edit">
+                  <i class="fa fa-times text-danger"></i></a>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
         </table>
+        
+        
       </div>
     </div>
     <div class="d-flex justify-content-center">

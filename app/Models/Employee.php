@@ -12,5 +12,6 @@ class Employee extends Model implements AuthenticatableContract
     use HasFactory;
     use Authenticatable;
     protected $table = 'employees';
-    protected $fillable = ['name', 'phoneNumber', 'dateOfBirth','sex', 'departmentId', 'id'];
+    protected $fillable = ['name', 'phoneNumber', 'dateOfBirth','sex', 'departmentId', 'id','updated_at','created_at'];
+    public $timestamps = true;
 }
