@@ -278,35 +278,6 @@ class AdminController extends Controller
 
     public function export(Request $request) 
     {
-        // $query = DB::table('accounts')
-        // ->join('employees', 'employees.id', '=', 'accounts.id')
-        // ->join('departments', 'departments.departmentId', '=', 'employees.departmentId')
-        // ->select(
-        //     'accounts.username',
-        //     'employees.name',
-        //     'employees.dateOfBirth',
-        //     'employees.phoneNumber',
-        //     'departments.departmentName'
-        // );
-        // if ($request->has('keyword') && !empty($request->keyword)) {
-        //     $keyword = $request->keyword;
-        //     $query->where('employees.name', 'like', '%' . $keyword . '%');
-        // }
-
-        // if ($request->has('department') && $request->department != '') {
-        //     $department = $request->department;
-        //     $query->where('employees.departmentId', $department);
-        // }
-
-        // // Nếu không có tham số nào thì không lọc
-        // if (!$request->has('keyword') && !$request->has('department')) {
-        //     // Không thêm điều kiện nào, lấy tất cả bản ghi
-        //     $filteredAccounts = $query->orderBy('accounts.updatedAt', 'desc')->get();
-        // } else {
-        //     // Nếu có bất kỳ tham số nào thì áp dụng điều kiện lọc
-        //     $filteredAccounts = $query->orderBy('accounts.updatedAt', 'desc')->get();
-        // }
-
         $filters = [];
 
         // Lọc theo Name
