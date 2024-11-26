@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AdminExport;
+use App\Imports\AdminImport;
 use App\Models\Admin;
 use App\Models\Employee;
 use App\Models\User;
@@ -119,14 +120,14 @@ class AdminController extends Controller
             'department' => 'required|',
             'sex' => 'required',
             'phoneNumber' => 'required|max:10|string',]);
-        
+
         $account = new Admin();
         $account -> username = $request -> username;
         $account -> password = Hash::make($request->password);
         $account -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $account -> created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $account -> updatedAt = Carbon::now('Asia/Ho_Chi_Minh');
-        $account -> updateBy = $updateBy;    
+        $account -> updateBy = $updateBy;
         $account -> save();
 
         $accountId = $account -> id;
@@ -190,10 +191,10 @@ class AdminController extends Controller
 
         $account = Admin::find($id);
         $account->update($data_account);
-        
+
         $user = Employee::find($user_id);
         $user->update($data);
-        
+
         Session()->put('message', 'Sửa thành công');
         return Redirect::to('admin/accounts');
     }
@@ -216,7 +217,7 @@ class AdminController extends Controller
     public function save_info_admin(Request $request)
     {
         $adminUser = Auth::guard('admins')->user();
-        
+
         $data = array();
         $data['name'] = $request->name;
         $data['phoneNumber'] = $request->phoneNumber;
@@ -224,7 +225,7 @@ class AdminController extends Controller
         $data['dateOfBirth'] = $request->dob;
         $data['sex'] = $request->input('sex');
         $data['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        
+
         $user = Employee::find($adminUser->id);
         $user->update($data);
 
@@ -276,7 +277,7 @@ class AdminController extends Controller
         }
     }
 
-    public function export(Request $request) 
+    public function export(Request $request)
     {
         $filters = [];
 
@@ -315,6 +316,19 @@ class AdminController extends Controller
 
         // Trả về file Excel đã lọc
         return Excel::download(new AdminExport($filteredAccounts), $fileName);
+    }
+
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+        try {
+            Excel::import(new AdminImport, $request->file('file'));
+            return redirect()->back()->with('success', 'Dữ liệu đã được nhập thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['import_error' => $e->getMessage()]);
+        }
     }
 
 }
