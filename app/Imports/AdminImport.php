@@ -24,13 +24,12 @@ class AdminImport implements WithHeadingRow, ToCollection
     */
     public function collection(collection $rows)
     {
-        $adminUser = Auth::guard('admins')->user();
-        $updateBy = DB::table('employees')->where('id', $adminUser->id)->pluck('employeeId')->first();
-
         foreach ($rows as $row) {
             if ($row->filter()->isEmpty()) {
                 continue; // Bỏ qua dòng trống
             }
+            $adminUser = Auth::guard('admins')->user();
+            $updateBy = DB::table('employees')->where('id', $adminUser->id)->pluck('employeeId')->first();
 
             // Kiểm tra sự tồn tại của dữ liệu
             $count = Admin::where('username', $row['username'])->count();
