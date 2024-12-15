@@ -34,5 +34,3 @@ Route::middleware([Admin::class])->group(function () {
 });
 
     Route::post('/import-excel', [AdminController::class, 'importExcel'])->name('admin.import.account');
-
-});
