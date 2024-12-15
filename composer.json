@@ -8,8 +8,9 @@
         "php": "^8.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "maatwebsite/excel": "^1.1",
-        "mews/captcha": "^3.4"
+        "maatwebsite/excel": "^3.1",
+        "mews/captcha": "^3.4",
+        "phpoffice/phpspreadsheet": "^1.29"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

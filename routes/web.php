@@ -32,3 +32,7 @@ Route::middleware([Admin::class])->group(function () {
     Route::post('admin/customer/{id}/update', [CustomerController::class, 'update_customer'])->name('admin.update.customer');
     Route::get('admin/customer/{id}/delete', [CustomerController::class, 'delete_customer'])->name('admin.delete.customer');
 });
+
+    Route::post('/import-excel', [AdminController::class, 'importExcel'])->name('admin.import.account');
+
+});
