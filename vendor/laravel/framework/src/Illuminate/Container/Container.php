@@ -16,6 +16,7 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionParameter;
 use TypeError;
+use Mews\Captcha\Facades\Captcha;
 
 class Container implements ArrayAccess, ContainerContract
 {
