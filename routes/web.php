@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentSlipController;
 use App\Http\Middleware\Admin;
+use Illuminate\Support\Facades\DB;
+
 
 
 Route::get('/', [AdminController::class, 'admin_login'])->name('admin_login');
@@ -22,4 +25,14 @@ Route::middleware([Admin::class])->group(function () {
     Route::get('admin/account/{id}/password', [AdminController::class, 'password_account'])->name('admin.password.account');
     Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
     Route::get('/admins-export', [AdminController::class, 'export'])->name('admins.export');
+
+    Route::get('/admin/all-paymentslip', [PaymentSlipController::class, 'all_paymentslip'])->name('admin.paymentslip');
+    Route::get('/admin/add-paymentslip', [PaymentSlipController::class, 'add_paymentslip'])->name('admin.add.paymentslip');
+    Route::post('/admin/save-paymentslip', [PaymentSlipController::class, 'save_paymentslip'])->name('admin.save.paymentslip');
+    Route::get('admin/paymentslip/{id}/view', [PaymentSlipController::class, 'view_paymentslip'])->name('admin.view.paymentslip');
+    Route::get('admin/paymentslip/{id}/edit', [PaymentSlipController::class, 'edit_paymentslip'])->name('admin.edit.paymentslip');
+    Route::post('admin/paymentslip/{id}/update', [PaymentSlipController::class, 'update_paymentslip'])->name('admin.update.paymentslip');
+    Route::get('admin/paymentslip/{id}/delete', [PaymentSlipController::class, 'delete_paymentslip'])->name('admin.delete.paymentslip');
+    Route::get('/admins-exportpaymentslip', [PaymentSlipController::class, 'export_paymentslip'])->name('admins.export.paymentslip');
+
 });
