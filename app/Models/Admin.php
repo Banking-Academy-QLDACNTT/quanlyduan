@@ -12,4 +12,8 @@ class Admin extends Model implements AuthenticatableContract
     use Authenticatable;
     protected $table = 'accounts';
     protected $fillable = ['username', 'password', 'updateBy', 'created_at', 'updated_at', 'updatedAt'];
+    public function accountPermissions()
+    {
+        return $this->hasMany(AccountPermission::class, 'id');
+    }
 }
