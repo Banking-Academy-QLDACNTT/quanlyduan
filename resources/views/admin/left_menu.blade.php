@@ -49,10 +49,10 @@
           <li><a href="">Thêm mới địa điểm thi</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý bài thi <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý sản phẩm <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-          <li><a href="">Danh sách bài thi</a></li>
-          <li><a href="">Thêm mới bài thi</a></li>
+          <li><a href="{{ route('admin.product') }}">Danh sách sản phẩm</a></li>
+          <li><a href="{{ route('admin.add.product') }}">Thêm mới sản phẩm</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-table"></i>Quản lý thí sinh <span class="fa fa-chevron-down"></span></a>

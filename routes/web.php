@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Middleware\Admin;
@@ -23,8 +24,8 @@ Route::middleware([CheckPermission::class . ':1,can_view,can_edit,can_delete,can
     Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
     Route::get('/admins-export', [AdminController::class, 'export'])->name('admins.export');
 
-
 });
+
 
 Route::middleware([Admin::class])->group(function () {
     Route::get('/admin/logout', [AdminController::class, 'admin_logout'])->name('admin.logout');
@@ -46,6 +47,17 @@ Route::middleware([Admin::class])->group(function () {
     Route::get('admin/order/{id}/edit', [OrderController::class, 'edit_order'])->name('admin.order.edit');
     Route::put('admin/order/{id}/update', [OrderController::class, 'update_order'])->name('admin.update.order');
     Route::get('admin/order/{id}/delete', [OrderController::class, 'delete_order'])->name('admin.delete.order');
+
+
+    
+    Route::get('/admin/all-product', [ProductController::class, 'all_product'])->name('admin.product');
+    Route::get('/admin/add-product', [ProductController::class, 'add_product'])->name('admin.add.product');
+    Route::post('/admin/save-product', [ProductController::class, 'save_product'])->name('admin.save.product');
+    Route::get('admin/product/{id}/view', [ProductController::class, 'view_product'])->name('admin.view.product');
+    Route::get('admin/product/{id}/edit', [ProductController::class, 'edit_product'])->name('admin.edit.product');
+    Route::post('admin/product/{id}/update', [ProductController::class, 'update_product'])->name('admin.update.product');
+    Route::get('admin/product/{id}/delete', [ProductController::class, 'delete_product'])->name('admin.delete.product');
+    Route::get('/admins-exportproduct', [ProductController::class, 'export_product'])->name('admins.export.product');
 });
 
     Route::post('/import-excel', [AdminController::class, 'importExcel'])->name('admin.import.account');
