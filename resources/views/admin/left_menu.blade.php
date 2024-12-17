@@ -32,10 +32,13 @@
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Quản lý đơn hàng <span class="fa fa-chevron-down"></span></a>
-        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý khách hàng <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
           <li><a href="{{ route('admin.order.all') }}">Danh sách đơn hàng</a></li>
           <li><a href="{{ route('admin.add.order') }}">Thêm đơn hàng mới</a></li>
+        </ul>
+        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý khách hàng <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+          
           <li><a href="{{ route('admin.customer') }}">Danh sách khách hàng</a></li>
           <li><a href="{{ route('admin.add.customer') }}">Thêm mới khách hàng</a></li>
           </ul>
