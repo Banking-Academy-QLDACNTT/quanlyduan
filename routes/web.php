@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use App\Http\Middleware\Admin;
 
 
@@ -22,4 +23,12 @@ Route::middleware([Admin::class])->group(function () {
     Route::get('admin/account/{id}/password', [AdminController::class, 'password_account'])->name('admin.password.account');
     Route::post('/admin/account/{id}/changepassword', [AdminController::class, 'changePassword'])->name('admin.changepassword.account');
     Route::get('/admins-export', [AdminController::class, 'export'])->name('admins.export');
+
+    Route::get('admin/all-order', [OrderController::class, 'all_order'])->name('admin.order.all');
+    Route::get('admin/add-order', [OrderController::class, 'add_order'])->name('admin.add.order');
+    Route::post('admin/save-order', [OrderController::class, 'save_order'])->name('admin.save.order');
+    Route::get('admin/order/{id}/details', [OrderController::class, 'order_details'])->name('admin.order.details');
+    Route::get('admin/order/{id}/edit', [OrderController::class, 'edit_order'])->name('admin.order.edit');
+    Route::put('admin/order/{id}/update', [OrderController::class, 'update_order'])->name('admin.update.order');
+    Route::get('admin/order/{id}/delete', [OrderController::class, 'delete_order'])->name('admin.delete.order');
 });

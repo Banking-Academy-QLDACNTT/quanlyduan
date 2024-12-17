@@ -31,10 +31,10 @@
             <li><a href="{{ route('admin.add.account') }}">Thêm tài khoản</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý lịch thi <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý đơn hàng <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-          <li><a href="">Danh sách lịch thi</a></li>
-          <li><a href="">Thêm mới lịch thi</a></li>
+          <li><a href="{{ route('admin.order.all') }}">Danh sách đơn hàng</a></li>
+          <li><a href="{{ route('admin.add.order') }}">Thêm đơn hàng mới</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Quản lý địa điểm thi <span class="fa fa-chevron-down"></span></a>
