@@ -570,6 +570,7 @@ class ComposerStaticInit589cc0f65c3aaa7d4e9024d545bc1974
 
     public static $classMap = array (
         'App\\Exports\\AdminExport' => __DIR__ . '/../..' . '/app/Exports/AdminExport.php',
+        'App\\Exports\\PaymentSlipExport' => __DIR__ . '/../..' . '/app/Exports/PaymentSlipExport.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
         'App\\Http\\Controllers\\CaptchaController' => __DIR__ . '/../..' . '/app/Http/Controllers/CaptchaController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',

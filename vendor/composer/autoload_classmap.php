@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Exports\\AdminExport' => $baseDir . '/app/Exports/AdminExport.php',
+    'App\\Exports\\PaymentSlipExport' => $baseDir . '/app/Exports/PaymentSlipExport.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
     'App\\Http\\Controllers\\CaptchaController' => $baseDir . '/app/Http/Controllers/CaptchaController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
