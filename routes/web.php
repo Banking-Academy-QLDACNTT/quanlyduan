@@ -5,8 +5,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaymentSlipController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\CheckPermission;
+use Illuminate\Support\Facades\DB;
+
+
 
 Route::get('/', [AdminController::class, 'admin_login'])->name('admin_login');
 Route::post('/admin/login', [AdminController::class, 'loginPost'])->name('admin.loginPost');
@@ -48,8 +52,6 @@ Route::middleware([Admin::class])->group(function () {
     Route::put('admin/order/{id}/update', [OrderController::class, 'update_order'])->name('admin.update.order');
     Route::get('admin/order/{id}/delete', [OrderController::class, 'delete_order'])->name('admin.delete.order');
 
-
-    
     Route::get('/admin/all-product', [ProductController::class, 'all_product'])->name('admin.product');
     Route::get('/admin/add-product', [ProductController::class, 'add_product'])->name('admin.add.product');
     Route::post('/admin/save-product', [ProductController::class, 'save_product'])->name('admin.save.product');
@@ -58,6 +60,19 @@ Route::middleware([Admin::class])->group(function () {
     Route::post('admin/product/{id}/update', [ProductController::class, 'update_product'])->name('admin.update.product');
     Route::get('admin/product/{id}/delete', [ProductController::class, 'delete_product'])->name('admin.delete.product');
     Route::get('/admins-exportproduct', [ProductController::class, 'export_product'])->name('admins.export.product');
+
+    Route::get('/admin/all-paymentslip', [PaymentSlipController::class, 'all_paymentslip'])->name('admin.paymentslip');
+    Route::get('/admin/add-paymentslip', [PaymentSlipController::class, 'add_paymentslip'])->name('admin.add.paymentslip');
+    Route::post('/admin/save-paymentslip', [PaymentSlipController::class, 'save_paymentslip'])->name('admin.save.paymentslip');
+    Route::get('admin/paymentslip/{id}/view', [PaymentSlipController::class, 'view_paymentslip'])->name('admin.view.paymentslip');
+    Route::get('admin/paymentslip/{id}/edit', [PaymentSlipController::class, 'edit_paymentslip'])->name('admin.edit.paymentslip');
+    Route::post('admin/paymentslip/{id}/update', [PaymentSlipController::class, 'update_paymentslip'])->name('admin.update.paymentslip');
+    Route::get('admin/paymentslip/{id}/delete', [PaymentSlipController::class, 'delete_paymentslip'])->name('admin.delete.paymentslip');
+    Route::get('/admins-exportpaymentslip', [PaymentSlipController::class, 'export_paymentslip'])->name('admins.export.paymentslip');
 });
 
     Route::post('/import-excel', [AdminController::class, 'importExcel'])->name('admin.import.account');
+
+
+
+

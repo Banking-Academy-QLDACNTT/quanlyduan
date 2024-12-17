@@ -43,10 +43,10 @@
           <li><a href="{{ route('admin.add.customer') }}">Thêm mới khách hàng</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý địa điểm thi <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý phiếu thanh toán <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-          <li><a href="">Danh sách địa điểm thi</a></li>
-          <li><a href="">Thêm mới địa điểm thi</a></li>
+          <li><a href="{{ route('admin.paymentslip') }}">Danh sách phiếu thanh toán</a></li>
+          <li><a href="{{ route('admin.add.paymentslip') }}">Thêm mới phiếu thanh toán</a></li>
           </ul>
         </li>
         <li><a><i class="fa fa-bar-chart-o"></i> Quản lý sản phẩm <span class="fa fa-chevron-down"></span></a>
