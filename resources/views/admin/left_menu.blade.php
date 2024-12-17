@@ -43,7 +43,7 @@
           <li><a href="{{ route('admin.add.customer') }}">Thêm mới khách hàng</a></li>
           </ul>
         </li>
-        <li><a><i class="fa fa-bar-chart-o"></i> Quản lý phiếu thanh toán <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-bar-chart-o"></i> Phiếu thanh toán<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
           <li><a href="{{ route('admin.paymentslip') }}">Danh sách phiếu thanh toán</a></li>
           <li><a href="{{ route('admin.add.paymentslip') }}">Thêm mới phiếu thanh toán</a></li>
@@ -53,20 +53,6 @@
           <ul class="nav child_menu">
           <li><a href="{{ route('admin.product') }}">Danh sách sản phẩm</a></li>
           <li><a href="{{ route('admin.add.product') }}">Thêm mới sản phẩm</a></li>
-          </ul>
-        </li>
-        <li><a><i class="fa fa-table"></i>Quản lý thí sinh <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="">Danh sách tài khoản thí sinh</a></li>
-            <li><a href="">Danh sách thí sinh</a></li>
-            <li><a href="">Thêm mới tài khoản</a></li>
-          </ul>
-        </li>
-        <li><a><i class="fa fa-table"></i>Quản lý admin <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="">Danh sách tài khoản admin</a></li>
-            <li><a href="">Danh sách admin</a></li>
-            <li><a href="">Thêm tài khoản admin</a></li>
           </ul>
         </li>
       </ul>
